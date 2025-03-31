@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gio hang</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html">Trang chu</a>
+      <a href="cart.html"
+        >Gio hang(
+        <span id="cart-count">0</span>
+        )
+      </a>
+    </header>
+    <h2>Giỏ hàng</h2>
+    <div id="cart-items"></div>
+    <button onclick="clearCart()">Xóa giỏ hàng</button>
+    <script>
+      function loadCart() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let cartContainer = document.getElementById("cart-items");
+        if (cart.length == 0) {
+          cartContainer.innerHTML = "<p>Giỏ hàng trống!</p>";
+          return;
+        }
+        cartContainer.innerHTML = cart
+          .map(
+            (item) => `
+        <div class="cart-item">
+          <img src="${item.img}" width="50">
+          <p>${item.name} - ${item.price.toLocaleString()} VND</p>
+          <p>Số lượng: ${item.quantity}</p>
+        </div>
+      `
+          )
+          .join("");
+
+        updateCartCount();
+      }
+      function clearCart() {
+        localStorage.removeItem("cart");
+        loadCart();
+      }
+      document.addEventListener("DOMContentLoaded", loadCart);
+    </script>
+    <script src="/assets/script/script.js"></script>
+    <script src="/assets/script/all-product.js"></script>
+  </body>
+</html>
